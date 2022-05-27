@@ -53,6 +53,14 @@ namespace ChessLibrary
                     RookMove(board);
                     break;
 
+                case Figure.whiteKing:
+                    KingMove(board);
+                    break; 
+                    
+                case Figure.blackKing:
+                    KingMove(board);
+                    break;
+
                 default:
                     break;
             }
@@ -1083,15 +1091,214 @@ namespace ChessLibrary
                 }
             }
         }
-
         private static void KingMove(Board board)
         {
-            
+            int x = board.CursoreSelected[1];
+            int y = board.CursoreSelected[0];
+            board.Squares[y, x].MovePossibility = true;
+            if(board.Squares[y,x].Figure == Figure.whiteKing)
+            {
+                try
+                {
+                    if(!whiteFigures.Contains(board.Squares[y-1, x].Figure))
+                    {
+                        board.Squares[y - 1, x].MovePossibility = true;
+                    }
+                }
+                catch(IndexOutOfRangeException e)
+                {
+
+                }//-1;0
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x-1].Figure))
+                    {
+                        board.Squares[y - 1, x-1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;-1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y, x-1].Figure))
+                    {
+                        board.Squares[y, x-1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;-1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x].Figure))
+                    {
+                        board.Squares[y+1, x].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;0
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x + 1].Figure))
+                    {
+                        board.Squares[y + 1, x + 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;+1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y, x+1].Figure))
+                    {
+                        board.Squares[y, x+1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;+1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x+1].Figure))
+                    {
+                        board.Squares[y - 1, x+1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;+1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y+1, x-1].Figure))
+                    {
+                        board.Squares[y + 1, x-1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;-1                
+            }
+            else
+            {
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y - 1, x].Figure))
+                    {
+                        board.Squares[y - 1, x].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;0
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y - 1, x - 1].Figure))
+                    {
+                        board.Squares[y - 1, x - 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;-1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y, x - 1].Figure))
+                    {
+                        board.Squares[y, x - 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;-1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y + 1, x].Figure))
+                    {
+                        board.Squares[y + 1, x].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;0
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y + 1, x + 1].Figure))
+                    {
+                        board.Squares[y + 1, x + 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;+1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y, x + 1].Figure))
+                    {
+                        board.Squares[y, x + 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;+1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y - 1, x + 1].Figure))
+                    {
+                        board.Squares[y - 1, x + 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;+1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y + 1, x - 1].Figure))
+                    {
+                        board.Squares[y + 1, x - 1].MovePossibility = true;
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;-1
+            }
         }
 
-        private static bool IsCheck(Board board, Fen fen)
+        private static bool IsCheck(Board board, Fen fen, ref Dictionary<Square, Square> atackVektor)
         {
+            
             Square whiteKing=null, blackKing=null, cursoreSelected = null; 
+
             foreach(Square sq in board.Squares)
             {
                 if (sq.Figure == Figure.whiteKing)
@@ -1108,13 +1315,35 @@ namespace ChessLibrary
             {
                 Board b = new Board().CreateBoard(fen);
                 b.CursoreSelected = new int[2] { sq.YCoordinate,sq.XCoordinate };
-                if(sq.Figure != Figure.none)
-                    if(whiteFigures.Contains(sq.Figure))
+                if (sq.Figure != Figure.none)
+                {
+                    if (whiteFigures.Contains(sq.Figure))
                     {
                         GetPossibleMove(b);
+                        if (b.Squares[blackKing.YCoordinate, blackKing.XCoordinate].MovePossibility)
+                        {
+                            atackVektor.Add(sq, blackKing);
+                            board.IsBlackCheck = true;
+                        }
                     }
+                    else
+                    {
+                        GetPossibleMove(b);
+                        if (b.Squares[whiteKing.YCoordinate, whiteKing.XCoordinate].MovePossibility)
+                        {                            
+                            atackVektor.Add(sq, whiteKing);
+                            board.IsWhiteCheck = true;
+                        }
+                    }
+                }
+                if (atackVektor.Count > 0)
+                {
+                    board.IsBlackCheck = false;
+                    board.IsWhiteCheck = false;
+                }
             }
-            return false;
+
+            return board.IsBlackCheck || board.IsWhiteCheck;
         }// not implimented
     }
 }

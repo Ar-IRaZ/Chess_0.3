@@ -7,6 +7,8 @@ namespace ChessLibrary.Game
 {
     public class Board
     {
+        public bool IsWhiteCheck { get; set; }
+        public bool IsBlackCheck { get; set; }
         public Square[,] Squares { get; set; }
         public int[] CursoreSelected { get; set; }
 
@@ -25,8 +27,8 @@ namespace ChessLibrary.Game
                     Squares[i, j] = new Square(fen.Figures[i,j],i,j);
                 }
             }
-            Squares[7, 0].CursoreSelected = true;
-            CursoreSelected = new int[]{7, 0};
+            Squares[6, 3].CursoreSelected = true;
+            CursoreSelected = new int[]{6, 3};
             return this;
         }
     }

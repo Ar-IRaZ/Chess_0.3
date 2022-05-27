@@ -16,6 +16,7 @@ namespace ChessLibrary.Game
         public int YCoordinate { get; set; }
         public bool CursoreSelected { get; set; }
         public bool MovePossibility { get; set; }
+        public List<Square> FiguresCanMove { get; set; }
 
         public Square()
         {            
@@ -26,17 +27,13 @@ namespace ChessLibrary.Game
             YCoordinate = -1;
             CursoreSelected = false;
             MovePossibility = false;
+            FiguresCanMove = new List<Square>();
         }
         public Square(Figure figure, int y, int x)
         {
             Figure = figure;
             XCoordinate = x;
-            YCoordinate = y;
-            //if ((x + y) % 2 == 0)
-            //{
-            //    Color = Color.white;
-            //}
-            //else Color = Color.black;
+            YCoordinate = y;           
             CursoreSelected = false;
             MovePossibility = false;
         }
