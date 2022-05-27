@@ -16,7 +16,7 @@ namespace ChessLibrary.Game
         public  int HalfMoveCount { get; set; }
 
 
-        public Fen(string fen = "rnbqkbnr/pppppppp/8/8/8/1P6/P1PPPPPP/RNBQKBNR w KQkq - 0 1")
+        public Fen(string fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
         {
             ParseFen(fen);
         }

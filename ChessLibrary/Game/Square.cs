@@ -10,32 +10,35 @@ namespace ChessLibrary.Game
     {
         //private SceneItems _menuItem;
         public Figure Figure { get; set; }
-        public Color Color { get; set; }
+        //public Color Color { get; set; }
        // public SceneItems SceneItems { get; set; }             
         public int XCoordinate { get; set; }
         public int YCoordinate { get; set; }
         public bool CursoreSelected { get; set; }
-        
+        public bool MovePossibility { get; set; }
 
         public Square()
         {            
             Figure = Figure.none;
-            Color = Color.none;
+            //Color = Color.none;
             //SceneItems = null;            
             XCoordinate = -1;
             YCoordinate = -1;
             CursoreSelected = false;
+            MovePossibility = false;
         }
         public Square(Figure figure, int y, int x)
         {
             Figure = figure;
             XCoordinate = x;
             YCoordinate = y;
-            if ((x + y) % 2 == 0)
-            {
-                Color = Color.white;
-            }
-            else Color = Color.black;            
+            //if ((x + y) % 2 == 0)
+            //{
+            //    Color = Color.white;
+            //}
+            //else Color = Color.black;
+            CursoreSelected = false;
+            MovePossibility = false;
         }
     }
 }

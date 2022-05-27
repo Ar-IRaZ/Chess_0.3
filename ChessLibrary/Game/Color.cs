@@ -4,6 +4,9 @@
     {
         white = 'w',
         black = 'b',
+        red = 'r',
+        blue = 'B',
+        darckGray = 'd',
         none = '-'
     }
 }

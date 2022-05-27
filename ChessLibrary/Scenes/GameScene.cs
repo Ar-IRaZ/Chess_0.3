@@ -21,25 +21,66 @@ namespace ChessLibrary.Scenes
         {
             if (Scene != null)
             {
-                Console.BackgroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.DarkGray;
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.Clear();
                 foreach (GameSceneItem sceneItem in Scene)
                 {
                     if (sceneItem.CursoreSelected)
                     {
-                        Console.BackgroundColor = ConsoleColor.Green;
+                        Console.BackgroundColor = ConsoleColor.DarkCyan;
+                        Console.ForegroundColor = SetColor(sceneItem.ForegroundColor);
                         Console.Write(sceneItem.Str);
-                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = SetColor(Color.none);
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
+                    }
+                    else if (sceneItem.PossibleMove)
+                    {
+                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = SetColor(sceneItem.ForegroundColor);
+                        Console.Write(sceneItem.Str);
+                        Console.ForegroundColor = SetColor(Color.none);
+                        Console.BackgroundColor = ConsoleColor.DarkGray;
                     }
                     else
+                    {
+                        Console.BackgroundColor = SetColor(sceneItem.BackgroundColor);
+                        Console.ForegroundColor = SetColor(sceneItem.ForegroundColor);
                         Console.Write(sceneItem.Str);
+                        Console.ForegroundColor = SetColor(Color.none);
+                        Console.BackgroundColor = SetColor(Color.none);                        
+                    }
                 }
             }
             else
                 Console.WriteLine("Scene is not set yet");
         }
 
+
+        private ConsoleColor SetColor(Color colorItem)
+        {
+            switch(colorItem)
+            {
+                case Color.red:
+                    return ConsoleColor.Red;
+
+                case Color.blue:
+                    return ConsoleColor.Blue;
+
+                case Color.white:
+                    return ConsoleColor.White;
+
+                case Color.black:
+                    return ConsoleColor.Black;
+
+                case Color.darckGray:
+                    return ConsoleColor.DarkGray;
+
+                default:
+                   return ConsoleColor.Black;
+            }
+        }
+        
         public void UpdateScene(List<ISceneItem> sceneItems)
         {
             Scene = sceneItems;
