@@ -410,8 +410,13 @@ namespace ChessLibrary.Game
                             if (ChessRools.whiteFigures.Contains(Board.Squares[y, x].Figure))
                             {
                                 SelectedForMove = Board.Squares[y, x];
-                                ChessRools.GetPossibleMove(Board);
+                                //ChessRools.GetPossibleMove(Board);
                                 IsSelectedForMove = true;
+                                
+                                foreach(Square sq in Board.Squares[y,x].FiguresCanMove)
+                                {
+                                    sq.MovePossibility = true;
+                                }
                             }
                         } //Перший вибір
                         else
@@ -436,7 +441,7 @@ namespace ChessLibrary.Game
                                 SelectedForMove = null;
                                 IsSelectedForMove = false;
                                 SwapActiveSide();
-
+                                UpdateBoard();
                                 #region  Сцена зміни гравця
                                 Console.Clear();
                                 Console.WriteLine("Move Black side! Press any key!");
@@ -455,8 +460,13 @@ namespace ChessLibrary.Game
                             if (ChessRools.blackFigures.Contains(Board.Squares[y, x].Figure))
                             {
                                 SelectedForMove = Board.Squares[y, x];
-                                ChessRools.GetPossibleMove(Board);
+                                //ChessRools.GetPossibleMove(Board);
                                 IsSelectedForMove = true;
+
+                                foreach (Square sq in Board.Squares[y, x].FiguresCanMove)
+                                {
+                                    sq.MovePossibility = true;
+                                }
                             }
                         }//Перший вибір
                         else
@@ -481,7 +491,7 @@ namespace ChessLibrary.Game
                                 SelectedForMove = null;
                                 IsSelectedForMove = false;
                                 SwapActiveSide();
-
+                                UpdateBoard();
                                 #region  Сцена зміни гравця
                                 Console.Clear();
                                 Console.WriteLine("Move White side! Press any key!");
@@ -512,6 +522,56 @@ namespace ChessLibrary.Game
         public  void Start(string config="NewGameConfig.json")
         {
                       
+        }
+        public void UpdateBoard()
+        {
+            foreach (Square sq in Board.Squares)
+            {
+                if(sq.FiguresCanMove.Count!=0)
+                sq.FiguresCanMove = new List<Square>();
+            }
+
+            Square whiteKing=null, blackKing=null;
+            foreach(Square sq in Board.Squares)
+            {
+                switch(sq.Figure)
+                {
+                    case Figure.blackKing:
+                        blackKing = sq;
+                        break;
+                    case Figure.whiteKing:
+                        whiteKing = sq;
+                        break;
+                    default:
+                        ChessRools.GetPossibleMove(sq, Board);
+                        break;
+                }
+            }
+            if(Fen.ActiveSide == Color.black)
+            {
+                try
+                {
+                    ChessRools.GetPossibleMove(whiteKing, Board);
+                    ChessRools.GetPossibleMove(blackKing, Board);
+                }
+                catch(NullReferenceException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+            }
+            else 
+            {
+                try
+                {
+                    ChessRools.GetPossibleMove(blackKing, Board);
+                    ChessRools.GetPossibleMove(whiteKing, Board);
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
         }
     }
 }

@@ -36,6 +36,7 @@ namespace ChessLibrary.Game
             YCoordinate = y;           
             CursoreSelected = false;
             MovePossibility = false;
+            FiguresCanMove = new List<Square>();
         }
     }
 }

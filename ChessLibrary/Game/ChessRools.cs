@@ -9,56 +9,56 @@ namespace ChessLibrary
         public static List<Figure> whiteFigures = new List<Figure>() { Figure.whiteKing, Figure.whiteBishop, Figure.whiteKnight, Figure.whitePawn, Figure.whiteQueen, Figure.whiteRook };
         public static List<Figure> blackFigures = new List<Figure>() { Figure.blackKing, Figure.blackBishop, Figure.blackKnight, Figure.blackPawn, Figure.blackQueen, Figure.blackRook };
 
-        public static void GetPossibleMove(Board board)
+        public static void GetPossibleMove(Square sq, Board board)
         {
 
-            switch (board.Squares[board.CursoreSelected[0], board.CursoreSelected[1]].Figure)
+            switch (sq.Figure)
             {
                 case Figure.blackPawn:
-                    PawnMove(board);
+                    PawnMove(sq, board);
                     break;
 
                 case Figure.whitePawn:
-                    PawnMove(board);
+                    PawnMove(sq, board);
                     break;
 
                 case Figure.whiteQueen:
-                    QueenMove(board);
+                    QueenMove(sq, board);
                     break;
 
                 case Figure.blackQueen:
-                    QueenMove(board);
+                    QueenMove(sq, board);
                     break;
 
                 case Figure.blackKnight:
-                    KnightMove(board);
+                    KnightMove(sq, board);
                     break;
                 case Figure.whiteKnight:
-                    KnightMove(board);
+                    KnightMove(sq, board);
                     break;
 
                 case Figure.whiteBishop:
-                    BishopMove(board);
+                    BishopMove(sq, board);
                     break;
 
                 case Figure.blackBishop:
-                    BishopMove(board);
+                    BishopMove(sq, board);
                     break;
 
                 case Figure.whiteRook:
-                    RookMove(board);
+                    RookMove(sq, board);
                     break;
 
                 case Figure.blackRook:
-                    RookMove(board);
+                    RookMove(sq, board);
                     break;
 
                 case Figure.whiteKing:
-                    KingMove(board);
+                    KingMove(sq, board);
                     break; 
                     
                 case Figure.blackKing:
-                    KingMove(board);
+                    KingMove(sq, board);
                     break;
 
                 default:
@@ -66,11 +66,13 @@ namespace ChessLibrary
             }
 
         }
-        private static void RookMove(Board board)
+
+
+        private static void RookMove(Square sq, Board board)
         {
-            int x = board.CursoreSelected[1];
-            int y = board.CursoreSelected[0];
-            board.Squares[y, x].MovePossibility = true;
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y,x]);
             int i;
             if (board.Squares[y, x].Figure == Figure.whiteRook)
             {
@@ -80,11 +82,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (blackFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;                        
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -99,11 +103,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (blackFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -118,11 +124,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
                     else if (blackFigures.Contains(board.Squares[y, i].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -137,11 +145,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
                     else if (blackFigures.Contains(board.Squares[y, i].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -158,11 +168,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -177,11 +189,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -196,11 +210,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
+                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -215,11 +231,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
+                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -230,11 +248,12 @@ namespace ChessLibrary
                 #endregion
             }
         }
-        private static void BishopMove(Board board)
+
+        private static void BishopMove(Square sq, Board board)
         {
-            int x = board.CursoreSelected[1];
-            int y = board.CursoreSelected[0];
-            board.Squares[y, x].MovePossibility = true;
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x]);
             if (board.Squares[y, x].Figure == Figure.whiteBishop)
             {
                 #region RightDown
@@ -244,13 +263,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i++;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -267,13 +290,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i--;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -290,13 +317,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i--;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -314,13 +345,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i++;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -330,7 +365,8 @@ namespace ChessLibrary
                 }
 
                 #endregion
-            } else
+            }
+            else
             {
                 #region RightDown
                 int i = y + 1;
@@ -339,13 +375,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i++;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -362,13 +402,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i--;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -385,13 +429,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i--;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -409,13 +457,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i++;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -428,11 +480,12 @@ namespace ChessLibrary
             }
 
         }
-        private static void QueenMove(Board board)
+
+        private static void QueenMove(Square sq, Board board)
         {
-            int x = board.CursoreSelected[1];
-            int y = board.CursoreSelected[0];
-            board.Squares[y, x].MovePossibility = true;
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y,x]);
             if (board.Squares[y, x].Figure == Figure.whiteQueen)
             {
                 #region RightDown
@@ -442,13 +495,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y,x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i++;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if(board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -465,13 +522,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i--;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -488,13 +549,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i--;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -512,13 +577,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i++;
                     }
                     else if (blackFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                         break;
                     }
                     else
@@ -534,11 +603,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y,x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (blackFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -553,11 +624,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (blackFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -572,11 +645,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
                     else if (blackFigures.Contains(board.Squares[y, i].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -591,11 +666,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
                     else if (blackFigures.Contains(board.Squares[y, i].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.blackKing)
+                            board.IsBlackCheck = true;
                         break;
                     }
                     else
@@ -614,13 +691,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i++;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -637,13 +718,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j++;
                         i--;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -660,13 +745,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i--;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -684,13 +773,17 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, j].Figure == Figure.none)
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
                         j--;
                         i++;
                     }
                     else if (whiteFigures.Contains(board.Squares[i, j].Figure))
                     {
-                        board.Squares[i, j].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                        if (board.Squares[i, j].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                         break;
                     }
                     else
@@ -706,11 +799,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -725,11 +820,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[i, x].Figure == Figure.none)
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
                     }
                     else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[i, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        if (board.Squares[i, x].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -744,11 +841,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
+                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -763,11 +862,13 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y, i].Figure == Figure.none)
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
+                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
                     {
-                        board.Squares[y, i].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        if (board.Squares[y, i].Figure == Figure.whiteKing)
+                            board.IsWhiteCheck = true;
                         break;
                     }
                     else
@@ -778,18 +879,23 @@ namespace ChessLibrary
                 #endregion
             }
         }
-        private static void KnightMove(Board board)
+
+        private static void KnightMove(Square sq, Board board)
         {
-            int x = board.CursoreSelected[1];
-            int y = board.CursoreSelected[0];
-            board.Squares[y, x].MovePossibility = true;
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+            board.Squares[y,x].FiguresCanMove.Add(board.Squares[y, x]);
             if (board.Squares[y, x].Figure == Figure.whiteKnight)
             {
                 try
                 {
                     if (!whiteFigures.Contains(board.Squares[y - 2, x - 1].Figure))
                     {
-                        board.Squares[y - 2, x - 1].MovePossibility = true;
+                        board.Squares[y,x].FiguresCanMove.Add(board.Squares[y - 2, x - 1]);
+                        if (board.Squares[y - 2, x - 1].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -801,7 +907,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y - 2, x + 1].Figure))
                     {
-                        board.Squares[y - 2, x + 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 2, x + 1]);
+                        if(board.Squares[y - 2, x + 1].Figure==Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -813,7 +923,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y + 2, x + 1].Figure))
                     {
-                        board.Squares[y + 2, x + 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 2, x + 1]);
+                        if (board.Squares[y + 2, x + 1].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -825,7 +939,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y + 2, x - 1].Figure))
                     {
-                        board.Squares[y + 2, x - 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 2, x - 1]);
+                        if (board.Squares[y + 2, x - 1].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -837,7 +955,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y - 1, x - 2].Figure))
                     {
-                        board.Squares[y - 1, x - 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 2]);
+                        if (board.Squares[y - 1, x - 2].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -849,7 +971,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y - 1, x + 2].Figure))
                     {
-                        board.Squares[y - 1, x + 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x + 2]);
+                        if (board.Squares[y - 1, x + 2].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -861,7 +987,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y + 1, x + 2].Figure))
                     {
-                        board.Squares[y + 1, x + 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 2]);
+                        if (board.Squares[y + 1, x + 2].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -873,7 +1003,11 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y + 1, x - 2].Figure))
                     {
-                        board.Squares[y + 1, x - 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 2]);
+                        if (board.Squares[y + 1, x - 2].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -887,7 +1021,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y - 2, x - 1].Figure))
                     {
-                        board.Squares[y - 2, x - 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 2, x - 1]);
+                        if (board.Squares[y - 2, x - 1].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -899,7 +1037,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y - 2, x + 1].Figure))
                     {
-                        board.Squares[y - 2, x + 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 2, x + 1]);
+                        if (board.Squares[y - 2, x + 1].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -911,7 +1053,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y + 2, x + 1].Figure))
                     {
-                        board.Squares[y + 2, x + 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 2, x + 1]);
+                        if (board.Squares[y + 2, x + 1].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -923,7 +1069,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y + 2, x - 1].Figure))
                     {
-                        board.Squares[y + 2, x - 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 2, x - 1]);
+                        if (board.Squares[y + 2, x - 1].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -935,7 +1085,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y - 1, x - 2].Figure))
                     {
-                        board.Squares[y - 1, x - 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 2]);
+                        if (board.Squares[y - 1, x - 2].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -947,7 +1101,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y - 1, x + 2].Figure))
                     {
-                        board.Squares[y - 1, x + 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x + 2]);
+                        if (board.Squares[y - 1, x + 2].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -959,7 +1117,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y + 1, x + 2].Figure))
                     {
-                        board.Squares[y + 1, x + 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 2]);
+                        if (board.Squares[y + 1, x + 2].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -971,7 +1133,11 @@ namespace ChessLibrary
                 {
                     if (!blackFigures.Contains(board.Squares[y + 1, x - 2].Figure))
                     {
-                        board.Squares[y + 1, x - 2].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 2]);
+                        if (board.Squares[y + 1, x - 2].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -980,18 +1146,23 @@ namespace ChessLibrary
                 }//RightUp+
             }
         }
-        private static void PawnMove(Board board)
+
+        private static void PawnMove(Square sq,Board board)
         {
-            int x = board.CursoreSelected[1];
-            int y = board.CursoreSelected[0];
-            board.Squares[y, x].MovePossibility = true;
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x]);
             if (board.Squares[y, x].Figure == Figure.whitePawn)
             {
                 try
                 {
                     if (blackFigures.Contains(board.Squares[y - 1, x - 1].Figure))
                     {
-                        board.Squares[y - 1, x - 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 1]);
+                        if (board.Squares[y - 1, x - 1].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1003,7 +1174,11 @@ namespace ChessLibrary
                 {
                     if (blackFigures.Contains(board.Squares[y - 1, x + 1].Figure))
                     {
-                        board.Squares[y - 1, x + 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x + 1]);
+                        if (board.Squares[y - 1, x + 1].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1015,7 +1190,11 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y - 1, x].Figure == Figure.none)
                     {
-                        board.Squares[y - 1, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
+                        if (board.Squares[y - 1, x].Figure == Figure.blackKing)
+                        {
+                            board.IsBlackCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1029,7 +1208,11 @@ namespace ChessLibrary
                     {
                         if (board.Squares[y - 2, x].Figure == Figure.none)
                         {
-                            board.Squares[y - 2, x].MovePossibility = true;
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 2, x]);
+                            if (board.Squares[y - 2, x].Figure == Figure.blackKing)
+                            {
+                                board.IsBlackCheck = true;
+                            }
                         }
                     }
                     catch (IndexOutOfRangeException e)
@@ -1044,7 +1227,12 @@ namespace ChessLibrary
                 {
                     if (whiteFigures.Contains(board.Squares[y + 1, x + 1].Figure))
                     {
-                        board.Squares[y + 1, x + 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 1]);
+                        if (board.Squares[y + 1, x + 1].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1056,7 +1244,11 @@ namespace ChessLibrary
                 {
                     if (whiteFigures.Contains(board.Squares[y + 1, x - 1].Figure))
                     {
-                        board.Squares[y + 1, x - 1].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 1]);
+                        if (board.Squares[y + 1, x - 1].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1068,7 +1260,11 @@ namespace ChessLibrary
                 {
                     if (board.Squares[y + 1, x].Figure == Figure.none)
                     {
-                        board.Squares[y + 1, x].MovePossibility = true;
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x]);
+                        if (board.Squares[y + 1, x].Figure == Figure.whiteKing)
+                        {
+                            board.IsWhiteCheck = true;
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1081,28 +1277,47 @@ namespace ChessLibrary
                     {
                         if (board.Squares[y + 2, x].Figure == Figure.none)
                         {
-                            board.Squares[y + 2, x].MovePossibility = true;
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 2, x]);
+                            if (board.Squares[y + 2, x].Figure == Figure.whiteKing)
+                            {
+                                board.IsWhiteCheck = true;
+                            }
                         }
                     }
                     catch (IndexOutOfRangeException e)
                     {
-                        //Реалізація зміни фігури
+                        
                     }//Forward 2
                 }
             }
         }
-        private static void KingMove(Board board)
+
+        private static void KingMove(Square sq, Board board)
         {
-            int x = board.CursoreSelected[1];
-            int y = board.CursoreSelected[0];
-            board.Squares[y, x].MovePossibility = true;
-            if(board.Squares[y,x].Figure == Figure.whiteKing)
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+
+            if (board.Squares[y,x].Figure == Figure.whiteKing)
             {
+                
                 try
                 {
                     if(!whiteFigures.Contains(board.Squares[y-1, x].Figure))
                     {
-                        board.Squares[y - 1, x].MovePossibility = true;
+                        bool k = false;
+                        foreach(Square squa in board.Squares)
+                        {
+                            if(blackFigures.Contains(squa.Figure))
+                            {
+                                if(squa.FiguresCanMove.Contains(board.Squares[y-1,x]))
+                                {
+                                    k = true;
+                                }                                
+                            }
+                        }
+                        if(!k)
+                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
+
                     }
                 }
                 catch(IndexOutOfRangeException e)
@@ -1114,7 +1329,20 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y - 1, x-1].Figure))
                     {
-                        board.Squares[y - 1, x-1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y - 1, x-1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1126,7 +1354,20 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y, x-1].Figure))
                     {
-                        board.Squares[y, x-1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y, x-1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x-1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1138,7 +1379,20 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y + 1, x].Figure))
                     {
-                        board.Squares[y+1, x].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y + 1, x]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1148,9 +1402,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y + 1, x + 1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x+1].Figure))
                     {
-                        board.Squares[y + 1, x + 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y + 1, x + 1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1162,7 +1429,20 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y, x+1].Figure))
                     {
-                        board.Squares[y, x+1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (blackFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y, x+1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x+1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1172,9 +1452,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y - 1, x+1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y-1, x+1].Figure))
                     {
-                        board.Squares[y - 1, x+1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (blackFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x+1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x+1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1186,21 +1479,58 @@ namespace ChessLibrary
                 {
                     if (!whiteFigures.Contains(board.Squares[y+1, x-1].Figure))
                     {
-                        board.Squares[y + 1, x-1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (blackFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x-1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x-1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//+1;-1                
+                }//+1;-1
+                 
+                if(board.IsWhiteCheck)
+                {
+                    if(board.Squares[y,x].FiguresCanMove.Count==0)
+                    {
+                        //Game over!
+                    }                    
+                }
+                else
+                    board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x]);
+
             }
             else
             {
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y - 1, x].Figure))
+                    if (!blackFigures.Contains(board.Squares[y-1, x].Figure))
                     {
-                        board.Squares[y - 1, x].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1210,9 +1540,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y - 1, x - 1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y-1, x-1].Figure))
                     {
-                        board.Squares[y - 1, x - 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x-1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x-1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1222,9 +1565,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y, x - 1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y, x-1].Figure))
                     {
-                        board.Squares[y, x - 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y, x-1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x-1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1234,9 +1590,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y + 1, x].Figure))
+                    if (!blackFigures.Contains(board.Squares[y+1, x].Figure))
                     {
-                        board.Squares[y + 1, x].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1246,9 +1615,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y + 1, x + 1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y+1, x+1].Figure))
                     {
-                        board.Squares[y + 1, x + 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x+1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x+1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1258,9 +1640,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y, x + 1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y, x+1].Figure))
                     {
-                        board.Squares[y, x + 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y, x+1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x+1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1270,9 +1665,22 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y - 1, x + 1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y-1, x+1].Figure))
                     {
-                        board.Squares[y - 1, x + 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x+1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x+1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1282,68 +1690,40 @@ namespace ChessLibrary
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y + 1, x - 1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y+1, x-1].Figure))
                     {
-                        board.Squares[y + 1, x - 1].MovePossibility = true;
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x-1]))
+                                {
+                                    k = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x-1]);
+
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
                 }//+1;-1
-            }
-        }
 
-        private static bool IsCheck(Board board, Fen fen, ref Dictionary<Square, Square> atackVektor)
-        {
+                if (board.IsBlackCheck)
+                {
+                    if (board.Squares[y, x].FiguresCanMove.Count == 0)
+                    {
+                        //Game over!
+                    }
+                }
+                else
+                    board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x]);
+            }
             
-            Square whiteKing=null, blackKing=null, cursoreSelected = null; 
-
-            foreach(Square sq in board.Squares)
-            {
-                if (sq.Figure == Figure.whiteKing)
-                    whiteKing = sq;
-                if (sq.Figure == Figure.blackKing)
-                    blackKing = sq;
-                if (sq.CursoreSelected)
-                    cursoreSelected = sq;
-                if (whiteKing != null && blackKing != null && cursoreSelected !=null)
-                    break;
-            }
-
-            foreach(Square sq in board.Squares)
-            {
-                Board b = new Board().CreateBoard(fen);
-                b.CursoreSelected = new int[2] { sq.YCoordinate,sq.XCoordinate };
-                if (sq.Figure != Figure.none)
-                {
-                    if (whiteFigures.Contains(sq.Figure))
-                    {
-                        GetPossibleMove(b);
-                        if (b.Squares[blackKing.YCoordinate, blackKing.XCoordinate].MovePossibility)
-                        {
-                            atackVektor.Add(sq, blackKing);
-                            board.IsBlackCheck = true;
-                        }
-                    }
-                    else
-                    {
-                        GetPossibleMove(b);
-                        if (b.Squares[whiteKing.YCoordinate, whiteKing.XCoordinate].MovePossibility)
-                        {                            
-                            atackVektor.Add(sq, whiteKing);
-                            board.IsWhiteCheck = true;
-                        }
-                    }
-                }
-                if (atackVektor.Count > 0)
-                {
-                    board.IsBlackCheck = false;
-                    board.IsWhiteCheck = false;
-                }
-            }
-
-            return board.IsBlackCheck || board.IsWhiteCheck;
-        }// not implimented
+        }        
     }
 }

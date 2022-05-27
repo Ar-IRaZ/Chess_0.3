@@ -17,13 +17,14 @@ namespace Chess_0._3
             //ConstructorInfo[] constructors = Type.GetType(app.Default.DefaultSceneSourceName).GetConstructors();
             //Scene scene = new Scene((ISceneSourse)constructors[0].Invoke(null));
             Scene scene = new Scene(new GameScene());           
-            Game game = new Game("rnbqkbnr/pppppppp/8/3k4/3K4/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", null,null);
-
+            Game game = new Game("rnbqkbnr/8/8/3ppp2/2PPP3/8/8/RNBQKBNR w KQkq - 0 1", null,null);
+            game.UpdateBoard();
             while (true)
             {
                 
                 scene.UpdateScene(game.GetScene());
                 scene.PrintScene();
+                
                 game.ReadInput();
                 
             }
