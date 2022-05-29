@@ -67,7 +67,6 @@ namespace ChessLibrary
 
         }
 
-
         private static void RookMove(Square sq, Board board)
         {
             int x = sq.XCoordinate;
@@ -212,7 +211,7 @@ namespace ChessLibrary
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
+                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                         if (board.Squares[y, i].Figure == Figure.whiteKing)
@@ -233,7 +232,7 @@ namespace ChessLibrary
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
+                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                         if (board.Squares[y, i].Figure == Figure.whiteKing)
@@ -486,201 +485,533 @@ namespace ChessLibrary
             int x = sq.XCoordinate;
             int y = sq.YCoordinate;
             board.Squares[y, x].FiguresCanMove.Add(board.Squares[y,x]);
+            
             if (board.Squares[y, x].Figure == Figure.whiteQueen)
             {
-                #region RightDown
-                int i = y + 1;
-                int j = x + 1;
-                while (j < 8 && i < 8)
+                if (!board.IsWhiteCheck)
                 {
-                    if (board.Squares[i, j].Figure == Figure.none)
+                    #region RightDown
+                    int i = y + 1;
+                    int j = x + 1;
+                    while (j < 8 && i < 8)
                     {
-                        board.Squares[y,x].FiguresCanMove.Add(board.Squares[i, j]);
-                        j++;
-                        i++;
-                    }
-                    else if (blackFigures.Contains(board.Squares[i, j].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        if(board.Squares[i, j].Figure == Figure.blackKing)
+                        if (board.Squares[i, j].Figure == Figure.none)
                         {
-                            board.IsBlackCheck = true;
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j++;
+                            i++;
                         }
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                #endregion
-
-                #region RightUp
-                i = y - 1;
-                j = x + 1;
-                while (j < 8 && i >= 0)
-                {
-                    if (board.Squares[i, j].Figure == Figure.none)
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        j++;
-                        i--;
-                    }
-                    else if (blackFigures.Contains(board.Squares[i, j].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
                         {
-                            board.IsBlackCheck = true;
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            if (board.Squares[i, j].Figure == Figure.blackKing)
+                            {
+                                board.IsBlackCheck = true;
+                            }
+                            break;
                         }
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                #endregion
-
-                #region LeftUp
-                i = y - 1;
-                j = x - 1;
-                while (j >= 0 && i >= 0)
-                {
-                    if (board.Squares[i, j].Figure == Figure.none)
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        j--;
-                        i--;
-                    }
-                    else if (blackFigures.Contains(board.Squares[i, j].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        else
                         {
-                            board.IsBlackCheck = true;
+                            break;
                         }
-                        break;
                     }
-                    else
-                    {
-                        break;
-                    }
-                }
-                #endregion
+                    #endregion
 
-                #region LeftDown
-                i = y + 1;
-                j = x - 1;
-
-                while (j >= 0 && i < 8)
-                {
-                    if (board.Squares[i, j].Figure == Figure.none)
+                    #region RightUp
+                    i = y - 1;
+                    j = x + 1;
+                    while (j < 8 && i >= 0)
                     {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        j--;
-                        i++;
-                    }
-                    else if (blackFigures.Contains(board.Squares[i, j].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
-                        if (board.Squares[i, j].Figure == Figure.blackKing)
+                        if (board.Squares[i, j].Figure == Figure.none)
                         {
-                            board.IsBlackCheck = true;
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j++;
+                            i--;
                         }
-                        break;
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            if (board.Squares[i, j].Figure == Figure.blackKing)
+                            {
+                                board.IsBlackCheck = true;
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+                    #endregion
+
+                    #region LeftUp
+                    i = y - 1;
+                    j = x - 1;
+                    while (j >= 0 && i >= 0)
                     {
-                        break;
+                        if (board.Squares[i, j].Figure == Figure.none)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j--;
+                            i--;
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            if (board.Squares[i, j].Figure == Figure.blackKing)
+                            {
+                                board.IsBlackCheck = true;
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
+                    #endregion
+
+                    #region LeftDown
+                    i = y + 1;
+                    j = x - 1;
+
+                    while (j >= 0 && i < 8)
+                    {
+                        if (board.Squares[i, j].Figure == Figure.none)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j--;
+                            i++;
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            if (board.Squares[i, j].Figure == Figure.blackKing)
+                            {
+                                board.IsBlackCheck = true;
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Down
+                    for (i = y + 1; i < 8; i++)
+                    {
+                        if (board.Squares[i, x].Figure == Figure.none)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, x].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                            if (board.Squares[i, x].Figure == Figure.blackKing)
+                                board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    #region Up
+                    for (i = y - 1; i >= 0; i--)
+                    {
+                        if (board.Squares[i, x].Figure == Figure.none)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, x].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                            if (board.Squares[i, x].Figure == Figure.blackKing)
+                                board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    #region Right
+                    for (i = x + 1; i < 8; i++)
+                    {
+                        if (board.Squares[y, i].Figure == Figure.none)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[y, i].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                            if (board.Squares[y, i].Figure == Figure.blackKing)
+                                board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    #region Left
+                    for (i = x - 1; i >= 0; i--)
+                    {
+                        if (board.Squares[y, i].Figure == Figure.none)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[y, i].Figure))
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                            if (board.Squares[y, i].Figure == Figure.blackKing)
+                                board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
                 }
-
-                #endregion
-
-                #region Down
-                for (i = y + 1; i < 8; i++)
+                else
                 {
-                    if (board.Squares[i, x].Figure == Figure.none)
+                    #region RightDown
+                    int i = y + 1;
+                    int j = x + 1;
+                    while (j < 8 && i < 8)
                     {
-                        board.Squares[y,x].FiguresCanMove.Add(board.Squares[i, x]);
-                    }
-                    else if (blackFigures.Contains(board.Squares[i, x].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
-                        if (board.Squares[i, x].Figure == Figure.blackKing)
-                            board.IsBlackCheck = true;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                #endregion
+                        if (board.Squares[i, j].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
 
-                #region Up
-                for (i = y - 1; i >= 0; i--)
-                {
-                    if (board.Squares[i, x].Figure == Figure.none)
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
-                    }
-                    else if (blackFigures.Contains(board.Squares[i, x].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
-                        if (board.Squares[i, x].Figure == Figure.blackKing)
-                            board.IsBlackCheck = true;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                #endregion
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
 
-                #region Right
-                for (i = x + 1; i < 8; i++)
-                {
-                    if (board.Squares[y, i].Figure == Figure.none)
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
-                    }
-                    else if (blackFigures.Contains(board.Squares[y, i].Figure))
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
-                        if (board.Squares[y, i].Figure == Figure.blackKing)
-                            board.IsBlackCheck = true;
-                        break;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                #endregion
+                            ConsoleGame.UpdateBoard(b, Color.white);
+                            
+                            if(!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j++;
+                            i++;
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            Board b = board.Clone();
 
-                #region Left
-                for (i = x - 1; i >= 0; i--)
-                {
-                    if (board.Squares[y, i].Figure == Figure.none)
-                    {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+                            if (!b.IsWhiteCheck)
+                            {
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                                if (board.Squares[i, j].Figure == Figure.blackKing)
+                                {
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else if (blackFigures.Contains(board.Squares[y, i].Figure))
+                    #endregion
+
+                    #region RightUp
+                    i = y - 1;
+                    j = x + 1;
+                    while (j < 8 && i >= 0)
                     {
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
-                        if (board.Squares[y, i].Figure == Figure.blackKing)
-                            board.IsBlackCheck = true;
-                        break;
+                        if (board.Squares[i, j].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j++;
+                            i--;
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+                            if (!b.IsWhiteCheck)
+                            {
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                                if (board.Squares[i, j].Figure == Figure.blackKing)
+                                {
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
-                    else
+                    #endregion
+
+                    #region LeftUp
+                    i = y - 1;
+                    j = x - 1;
+                    while (j >= 0 && i >= 0)
                     {
-                        break;
+                        if (board.Squares[i, j].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j--;
+                            i--;
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+                            if (!b.IsWhiteCheck)
+                            {
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                                if (board.Squares[i, j].Figure == Figure.blackKing)
+                                {
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
                     }
+                    #endregion
+
+                    #region LeftDown
+                    i = y + 1;
+                    j = x - 1;
+
+                    while (j >= 0 && i < 8)
+                    {
+                        if (board.Squares[i, j].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                            j--;
+                            i++;
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, j].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, j].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+                            if (!b.IsWhiteCheck)
+                            {
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, j]);
+                                if (board.Squares[i, j].Figure == Figure.blackKing)
+                                {
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+
+                    #endregion
+
+                    #region Down
+                    for (i = y + 1; i < 8; i++)
+                    {
+                        if (board.Squares[i, x].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, x].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, x].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, x].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                            //if (board.Squares[i, x].Figure == Figure.blackKing)
+                            //    board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    #region Up
+                    for (i = y - 1; i >= 0; i--)
+                    {
+                        if (board.Squares[i, x].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, x].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[i, x].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[i, x].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[i, x]);
+                            //if (board.Squares[i, x].Figure == Figure.blackKing)
+                            //    board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    #region Right
+                    for (i = x + 1; i < 8; i++)
+                    {
+                        if (board.Squares[y, i].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[y, i].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[y, i].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[y, i].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                            //if (board.Squares[y, i].Figure == Figure.blackKing)
+                            //    board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
+
+                    #region Left
+                    for (i = x - 1; i >= 0; i--)
+                    {
+                        if (board.Squares[y, i].Figure == Figure.none)
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[y, i].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                        }
+                        else if (blackFigures.Contains(board.Squares[y, i].Figure))
+                        {
+                            Board b = board.Clone();
+
+                            b.Squares[y, i].Figure = Figure.whiteQueen;
+                            b.Squares[y, x].Figure = Figure.none;
+
+                            ConsoleGame.UpdateBoard(b, Color.white);
+
+                            if (!b.IsWhiteCheck)
+                                board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
+                            //if (board.Squares[y, i].Figure == Figure.blackKing)
+                            //    board.IsBlackCheck = true;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    #endregion
                 }
-                #endregion
             }
             if (board.Squares[y, x].Figure == Figure.blackQueen)
             {
@@ -843,7 +1174,7 @@ namespace ChessLibrary
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
+                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                         if (board.Squares[y, i].Figure == Figure.whiteKing)
@@ -864,7 +1195,7 @@ namespace ChessLibrary
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                     }
-                    else if (whiteFigures.Contains(board.Squares[i, x].Figure))
+                    else if (whiteFigures.Contains(board.Squares[y, i].Figure))
                     {
                         board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, i]);
                         if (board.Squares[y, i].Figure == Figure.whiteKing)
@@ -1147,6 +1478,469 @@ namespace ChessLibrary
             }
         }
 
+        public  static void KingMoveEnded(Square sq, Board board)
+        {
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+
+            if (board.Squares[y, x].Figure == Figure.whiteKing)
+            {
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x].Figure) )
+                    {
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y - 1, x]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
+                        }
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;0
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x - 1].Figure))
+                    {
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y - 1, x - 1]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;-1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y, x - 1].Figure))
+                    {
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y, x - 1]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x - 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;-1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x].Figure) )
+                    {
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y + 1, x]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;0
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x + 1].Figure) )
+                    {
+                        bool k = false;
+                        foreach (Square squa in board.Squares)
+                        {
+                            if (blackFigures.Contains(squa.Figure))
+                            {
+                                if (squa.FiguresCanMove.Contains(board.Squares[y + 1, x + 1]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;+1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y, x + 1].Figure))
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (blackFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y, x + 1]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x + 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;+1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x + 1].Figure))
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (blackFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y - 1, x + 1]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x + 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;+1
+
+                try
+                {
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x - 1].Figure))
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (blackFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y + 1, x - 1]))
+                                {
+                                    k = true;
+                                    board.IsWhiteCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;-1   
+            }
+            else
+            {
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y - 1, x].Figure) )
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y - 1, x]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;0
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y - 1, x - 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y - 1, x - 1]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;-1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y, x - 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y, x - 1]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x - 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;-1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y + 1, x].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y + 1, x]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;0
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y + 1, x + 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y + 1, x + 1]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;+1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y, x + 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y, x + 1]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x + 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//0;+1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y - 1, x + 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y - 1, x + 1]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x + 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//-1;+1
+
+                try
+                {
+                    if (!blackFigures.Contains(board.Squares[y + 1, x - 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
+                    {
+                        bool k = false;
+                        foreach (Square s in board.Squares)
+                        {
+                            if (whiteFigures.Contains(s.Figure))
+                            {
+                                if (s.FiguresCanMove.Contains(board.Squares[y + 1, x - 1]))
+                                {
+                                    k = true;
+                                    board.IsBlackCheck = true;
+                                }
+                            }
+                        }
+                        if (!k)
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 1]);
+
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+
+                }//+1;-1                
+            }
+        }
+
+        public static void KingUnderAttack(Square sq, Board board)
+        {
+            int x = sq.XCoordinate;
+            int y = sq.YCoordinate;
+
+            if (board.Squares[y, x].Figure == Figure.whiteKing)
+            {
+                foreach(Square s in board.Squares)
+                {
+                    if(blackFigures.Contains(s.Figure))
+                    {
+                        if(s.FiguresCanMove.Contains(sq))
+                        {
+                            board.IsWhiteCheck = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                foreach (Square s in board.Squares)
+                {
+                    if (whiteFigures.Contains(s.Figure))
+                    {
+                        if (s.FiguresCanMove.Contains(sq))
+                        {
+                            board.IsBlackCheck = true;
+                        }
+                    }
+                }
+
+                }
+            }
+
         private static void PawnMove(Square sq,Board board)
         {
             int x = sq.XCoordinate;
@@ -1302,197 +2096,174 @@ namespace ChessLibrary
                 
                 try
                 {
-                    if(!whiteFigures.Contains(board.Squares[y-1, x].Figure))
+                    if(!whiteFigures.Contains(board.Squares[y-1, x].Figure) /*&& board.Squares[y - 1, x].Figure!=Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach(Square squa in board.Squares)
+                        
+                        Board b = board.Clone();
+                        
+                        b.Squares[y - 1, x].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
                         {
-                            if(blackFigures.Contains(squa.Figure))
-                            {
-                                if(squa.FiguresCanMove.Contains(board.Squares[y-1,x]))
-                                {
-                                    k = true;
-                                }                                
-                            }
+                            
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
+
                         }
-                        if(!k)
-                        board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
 
                     }
                 }
                 catch(IndexOutOfRangeException e)
                 {
 
-                }//-1;0
+                }//-1;0+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y - 1, x-1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x -1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square squa in board.Squares)
+                        Board b = board.Clone();
+                        
+                        b.Squares[y - 1, x - 1].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
                         {
-                            if (blackFigures.Contains(squa.Figure))
-                            {
-                                if (squa.FiguresCanMove.Contains(board.Squares[y - 1, x-1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
                             board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 1]);
-
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//-1;-1
+                }//-1;-1+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y, x-1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y, x -1].Figure)/* && board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square squa in board.Squares)
-                        {
-                            if (blackFigures.Contains(squa.Figure))
-                            {
-                                if (squa.FiguresCanMove.Contains(board.Squares[y, x-1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x-1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y, x - 1].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x - 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//0;-1
+                }//0;-1+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y + 1, x].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square squa in board.Squares)
+                        Board b = board.Clone();
+
+                        b.Squares[y + 1, x].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
                         {
-                            if (blackFigures.Contains(squa.Figure))
-                            {
-                                if (squa.FiguresCanMove.Contains(board.Squares[y + 1, x]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
                             board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x]);
-
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//+1;0
+                }//+1;0+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y + 1, x+1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x + 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square squa in board.Squares)
+                        Board b = board.Clone();
+                        b.Squares[y + 1, x + 1].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
                         {
-                            if (blackFigures.Contains(squa.Figure))
-                            {
-                                if (squa.FiguresCanMove.Contains(board.Squares[y + 1, x + 1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
                             board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x + 1]);
-
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//+1;+1
+                }//+1;+1+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y, x+1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y, x+1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (blackFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y, x+1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x+1]);
+                        Board b = board.Clone();
+                        b.Squares[y, x + 1].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
 
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x + 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//0;+1
+                }//0;+1+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y-1, x+1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y - 1, x+1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (blackFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x+1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x+1]);
+                        Board b = board.Clone();
+                        b.Squares[y - 1, x + 1].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
 
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x + 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//-1;+1
+                }//-1;+1+
 
                 try
                 {
-                    if (!whiteFigures.Contains(board.Squares[y+1, x-1].Figure))
+                    if (!whiteFigures.Contains(board.Squares[y + 1, x-1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.blackKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (blackFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x-1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x-1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y + 1, x - 1].Figure = Figure.whiteKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.white);
+
+                        if (!b.IsWhiteCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
@@ -1500,14 +2271,7 @@ namespace ChessLibrary
 
                 }//+1;-1
                  
-                if(board.IsWhiteCheck)
-                {
-                    if(board.Squares[y,x].FiguresCanMove.Count==0)
-                    {
-                        //Game over!
-                    }                    
-                }
-                else
+                
                     board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x]);
 
             }
@@ -1515,215 +2279,190 @@ namespace ChessLibrary
             {
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y-1, x].Figure))
+                    if (!blackFigures.Contains(board.Squares[y - 1, x].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
+
+                        Board b = board.Clone();
+
+                        b.Squares[y - 1, x].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
                         {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x]))
-                                {
-                                    k = true;
-                                }
-                            }
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x]);
                         }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x]);
 
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//-1;0
+                }//-1;0+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y-1, x-1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y - 1, x - 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x-1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x-1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y - 1, x - 1].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y - 1, x - 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//-1;-1
+                }//-1;-1+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y, x-1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y, x - 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y, x-1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x-1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y, x - 1].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x - 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//0;-1
+                }//0;-1+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y+1, x].Figure))
+                    if (!blackFigures.Contains(board.Squares[y + 1, x].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x]);
+                        Board b = board.Clone();
 
+                        b.Squares[y + 1, x].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//+1;0
+                }//+1;0+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y+1, x+1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y + 1, x + 1].Figure) /*&& board.Squares[y - 1, x].Figure != Figure.whiteKing*/)
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x+1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x+1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y + 1, x + 1].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x + 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//+1;+1
+                }//+1;+1+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y, x+1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y, x + 1].Figure) )
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y, x+1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x+1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y, x + 1].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x + 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//0;+1
+                }//0;+1+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y-1, x+1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y - 1, x + 1].Figure) )
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y-1, x+1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y-1, x+1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y, x + 1].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x + 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
-                }//-1;+1
+                }//-1;+1+
 
                 try
                 {
-                    if (!blackFigures.Contains(board.Squares[y+1, x-1].Figure))
+                    if (!blackFigures.Contains(board.Squares[y + 1, x - 1].Figure) )
                     {
-                        bool k = false;
-                        foreach (Square s in board.Squares)
-                        {
-                            if (whiteFigures.Contains(s.Figure))
-                            {
-                                if (s.FiguresCanMove.Contains(board.Squares[y+1, x-1]))
-                                {
-                                    k = true;
-                                }
-                            }
-                        }
-                        if (!k)
-                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y+1, x-1]);
+                        Board b = board.Clone();
 
+                        b.Squares[y + 1, x - 1].Figure = Figure.blackKing;
+                        b.Squares[y, x].Figure = Figure.none;
+
+                        ConsoleGame.UpdateBoard(b, Color.black);
+
+                        if (!b.IsBlackCheck)
+                        {
+                            board.Squares[y, x].FiguresCanMove.Add(board.Squares[y + 1, x - 1]);
+                        }
                     }
                 }
                 catch (IndexOutOfRangeException e)
                 {
 
                 }//+1;-1
-
-                if (board.IsBlackCheck)
-                {
-                    if (board.Squares[y, x].FiguresCanMove.Count == 0)
-                    {
-                        //Game over!
-                    }
-                }
-                else
+                
+               
                     board.Squares[y, x].FiguresCanMove.Add(board.Squares[y, x]);
             }
+
+
             
         }        
+
+
     }
 }

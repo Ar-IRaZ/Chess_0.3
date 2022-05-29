@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ChessLibrary.Game
 {
-    public class Game
+    public class ConsoleGame
     {
         private int status;      //0 - Game continue, <0 - Game ended
         //public Scene Scene { get; set; }
@@ -17,7 +17,7 @@ namespace ChessLibrary.Game
         private bool IsSelectedForMove { get; set; }
         private Square SelectedForMove { get; set; }
 
-        public Game(string fen, /*Scene scene,*/ Player whitePlayer, Player blackPlayer)
+        public ConsoleGame(string fen, /*Scene scene,*/ Player whitePlayer, Player blackPlayer)
         {
             status = 0;
             //Scene = scene;
@@ -361,7 +361,7 @@ namespace ChessLibrary.Game
                     }
                         break;
                 #endregion
-
+                    
                     #region RightArrow
                 case ConsoleKey.RightArrow:
                     if (Fen.ActiveSide == Color.white)
@@ -401,53 +401,73 @@ namespace ChessLibrary.Game
                     #region Enter
                     
                     case ConsoleKey.Enter:
-
+                    
                     #region White
                     if (Fen.ActiveSide == Color.white /*&& App.Player == BlackPlayer*/)
                     {
-                        if (!IsSelectedForMove)
+                        if(!Board.IsWhiteCheck)
+                        {
+                            if (!IsSelectedForMove)
+                            {
+                                if (ChessRools.whiteFigures.Contains(Board.Squares[y, x].Figure))
+                                {
+                                    SelectedForMove = Board.Squares[y, x];
+                                    //ChessRools.GetPossibleMove(Board);
+                                    IsSelectedForMove = true;
+
+                                    foreach (Square sq in Board.Squares[y, x].FiguresCanMove)
+                                    {
+                                        sq.MovePossibility = true;
+                                    }
+                                }
+                            } //Перший вибір
+                            else
+                            {
+                                if (Board.Squares[Board.CursoreSelected[0], Board.CursoreSelected[1]] == SelectedForMove)
+                                {
+                                    foreach (Square sq in Board.Squares)
+                                    {
+                                        sq.MovePossibility = false;
+                                    }
+                                    IsSelectedForMove = false;
+                                    SelectedForMove = null;
+                                }//Сброс вибору
+                                else if (Board.Squares[Board.CursoreSelected[0], Board.CursoreSelected[1]].MovePossibility)
+                                {
+                                    Board.Squares[Board.CursoreSelected[0], Board.CursoreSelected[1]].Figure = SelectedForMove.Figure;
+                                    SelectedForMove.Figure = Figure.none;
+                                    foreach (Square sq in Board.Squares)
+                                    {
+                                        sq.MovePossibility = false;
+                                    }
+                                    SelectedForMove = null;
+                                    IsSelectedForMove = false;
+                                    Fen.HalfMoveCount++;
+                                    SwapActiveSide();
+                                    UpdateBoard();
+                                    #region  Сцена зміни гравця
+                                    Console.Clear();
+                                    Console.BackgroundColor = ConsoleColor.Black;
+                                    Console.ForegroundColor = ConsoleColor.White;
+                                    Console.WriteLine("Move Black side! Press any key!");
+                                    Console.ReadKey(true);
+                                    #endregion
+                                }
+                            }//Хід
+                        }
+                        else
                         {
                             if (ChessRools.whiteFigures.Contains(Board.Squares[y, x].Figure))
                             {
                                 SelectedForMove = Board.Squares[y, x];
                                 //ChessRools.GetPossibleMove(Board);
                                 IsSelectedForMove = true;
-                                
-                                foreach(Square sq in Board.Squares[y,x].FiguresCanMove)
+
+                                foreach (Square sq in Board.Squares[y, x].FiguresCanMove)
                                 {
                                     sq.MovePossibility = true;
                                 }
                             }
-                        } //Перший вибір
-                        else
-                        {
-                            if (Board.Squares[Board.CursoreSelected[0], Board.CursoreSelected[1]] == SelectedForMove)
-                            {
-                                foreach (Square sq in Board.Squares)
-                                {
-                                    sq.MovePossibility = false;
-                                }
-                                IsSelectedForMove = false;
-                                SelectedForMove = null;
-                            }//Сброс вибору
-                            else if (Board.Squares[Board.CursoreSelected[0], Board.CursoreSelected[1]].MovePossibility)
-                            {
-                                Board.Squares[Board.CursoreSelected[0], Board.CursoreSelected[1]].Figure = SelectedForMove.Figure;
-                                SelectedForMove.Figure = Figure.none;
-                                foreach (Square sq in Board.Squares)
-                                {
-                                    sq.MovePossibility = false;
-                                }
-                                SelectedForMove = null;
-                                IsSelectedForMove = false;
-                                SwapActiveSide();
-                                UpdateBoard();
-                                #region  Сцена зміни гравця
-                                Console.Clear();
-                                Console.WriteLine("Move Black side! Press any key!");
-                                Console.ReadKey(true);
-                                #endregion
-                            }//Хід
                         }
                     }
                     #endregion
@@ -490,10 +510,15 @@ namespace ChessLibrary.Game
                                 }
                                 SelectedForMove = null;
                                 IsSelectedForMove = false;
+                                Fen.HalfMoveCount++;
+                                Fen.MoveCount++;
+                                
                                 SwapActiveSide();
                                 UpdateBoard();
                                 #region  Сцена зміни гравця
                                 Console.Clear();
+                                Console.BackgroundColor = ConsoleColor.Black;
+                                Console.ForegroundColor = ConsoleColor.White;
                                 Console.WriteLine("Move White side! Press any key!");
                                 Console.ReadKey(true);
                                 #endregion
@@ -551,7 +576,7 @@ namespace ChessLibrary.Game
             {
                 try
                 {
-                    ChessRools.GetPossibleMove(whiteKing, Board);
+                    ChessRools.KingMoveEnded(whiteKing, Board);
                     ChessRools.GetPossibleMove(blackKing, Board);
                 }
                 catch(NullReferenceException e)
@@ -564,8 +589,61 @@ namespace ChessLibrary.Game
             {
                 try
                 {
-                    ChessRools.GetPossibleMove(blackKing, Board);
+                    ChessRools.KingMoveEnded(blackKing, Board);
                     ChessRools.GetPossibleMove(whiteKing, Board);
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+
+        public static void UpdateBoard( Board Board, Color ActiveSide)
+        {
+            foreach (Square sq in Board.Squares)
+            {
+                if (sq.FiguresCanMove.Count != 0)
+                    sq.FiguresCanMove = new List<Square>();
+            }
+
+            Square whiteKing = null, blackKing = null;
+            foreach (Square sq in Board.Squares)
+            {
+                switch (sq.Figure)
+                {
+                    case Figure.blackKing:
+                        blackKing = sq;
+                        break;
+                    case Figure.whiteKing:
+                        whiteKing = sq;
+                        break;
+                    default:
+                        ChessRools.GetPossibleMove(sq, Board);
+                        break;
+                }
+            }
+            if (ActiveSide == Color.black)
+            {
+                try
+                {
+                    ChessRools.KingMoveEnded(whiteKing, Board);
+                    ChessRools.KingUnderAttack(blackKing, Board);
+                    
+                }
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+
+            }
+            else
+            {
+                try
+                {
+                    ChessRools.KingMoveEnded(blackKing, Board);
+                    ChessRools.KingUnderAttack(whiteKing, Board);
+                    
                 }
                 catch (NullReferenceException e)
                 {

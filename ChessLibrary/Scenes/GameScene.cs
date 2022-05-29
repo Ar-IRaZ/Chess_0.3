@@ -28,7 +28,7 @@ namespace ChessLibrary.Scenes
                 {
                     if (sceneItem.CursoreSelected)
                     {
-                        Console.BackgroundColor = ConsoleColor.DarkCyan;
+                        Console.BackgroundColor = ConsoleColor.Yellow;
                         Console.ForegroundColor = SetColor(sceneItem.ForegroundColor);
                         Console.Write(sceneItem.Str);
                         Console.ForegroundColor = SetColor(Color.none);
@@ -36,7 +36,7 @@ namespace ChessLibrary.Scenes
                     }
                     else if (sceneItem.PossibleMove)
                     {
-                        Console.BackgroundColor = ConsoleColor.Blue;
+                        Console.BackgroundColor = ConsoleColor.Green;
                         Console.ForegroundColor = SetColor(sceneItem.ForegroundColor);
                         Console.Write(sceneItem.Str);
                         Console.ForegroundColor = SetColor(Color.none);
@@ -84,8 +84,6 @@ namespace ChessLibrary.Scenes
         public void UpdateScene(List<ISceneItem> sceneItems)
         {
             Scene = sceneItems;
-        }
-
-        
+        }        
     }
 }

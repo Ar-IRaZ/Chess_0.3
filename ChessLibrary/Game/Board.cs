@@ -31,5 +31,23 @@ namespace ChessLibrary.Game
             CursoreSelected = new int[]{6, 3};
             return this;
         }
+
+        internal Board Clone()
+        {
+            Board board = new Board();
+
+            //board.CursoreSelected = (int[])CursoreSelected.Clone();
+
+            board.Squares = new Square [8, 8];
+            for(int i = 0; i<8; i++)
+                for(int j = 0; j<8; j++)
+                {
+                    board.Squares[i, j] = new Square(Squares[i, j].Figure, i, j);
+                    //board.Squares[i, j].FiguresCanMove = Squares[i, j].FiguresCanMove;
+                }
+
+            return board;
+
+        }
     }
 }
