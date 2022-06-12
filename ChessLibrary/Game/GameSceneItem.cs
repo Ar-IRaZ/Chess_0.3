@@ -11,7 +11,7 @@ namespace ChessLibrary.Game
         public string Str { get; set; }
         public bool CursoreSelected { get; set; }
         public bool PossibleMove { get; set; }
-        //public Color SquareColor { get; set; }
+       
         public Color BackgroundColor { get; set; }
         public Color ForegroundColor { get; set; }
 
@@ -19,13 +19,13 @@ namespace ChessLibrary.Game
                              bool cursoreSelected = false,
                              bool possibleMove = false,
                              Color backgraundColor = Color.none,
-                             //Color squareColor =Color.none,
+                             
                              Color foregroundColor=Color.none)
         {
             CursoreSelected = cursoreSelected;
             Str = str;
             PossibleMove = possibleMove;
-            //SquareColor = squareColor;
+            
             BackgroundColor = backgraundColor;
             ForegroundColor = foregroundColor;
         }

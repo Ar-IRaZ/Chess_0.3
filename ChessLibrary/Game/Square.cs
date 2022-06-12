@@ -8,10 +8,9 @@ namespace ChessLibrary.Game
 {
     public class Square
     {
-        //private SceneItems _menuItem;
+       
         public Figure Figure { get; set; }
-        //public Color Color { get; set; }
-       // public SceneItems SceneItems { get; set; }             
+                    
         public int XCoordinate { get; set; }
         public int YCoordinate { get; set; }
         public bool CursoreSelected { get; set; }
@@ -21,8 +20,7 @@ namespace ChessLibrary.Game
         public Square()
         {            
             Figure = Figure.none;
-            //Color = Color.none;
-            //SceneItems = null;            
+                   
             XCoordinate = -1;
             YCoordinate = -1;
             CursoreSelected = false;

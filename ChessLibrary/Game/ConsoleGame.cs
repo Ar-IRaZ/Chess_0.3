@@ -1,4 +1,5 @@
-﻿using ChessLibrary.Scenes;
+﻿using ChessLibrary.EscapeMenu;
+using ChessLibrary.Scenes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,27 +7,27 @@ using System.Text;
 
 namespace ChessLibrary.Game
 {
-    public class ConsoleGame
+    public class ConsoleGame : GamePart
     {
         private int status;      //0 - Game continue, <0 - Game ended
-        //public Scene Scene { get; set; }
-        public Fen Fen { get; set; }
+
+        private Fen Fen { get; set; }
         public Player WhitePlayer { get; set; }
         public Player BlackPlayer { get; set; }
-        public Board Board { get; set; }
+        private Board Board { get; set; }
         private bool IsSelectedForMove { get; set; }
-        private Square SelectedForMove { get; set; } 
-        
+        private Square SelectedForMove { get; set; }
 
-        public ConsoleGame(string fen, /*Scene scene,*/ Player whitePlayer, Player blackPlayer)
+
+        public ConsoleGame(string fen, Player whitePlayer, Player blackPlayer)
         {
-            status = 0;
-            //Scene = scene;
+            status = 0;            
             Fen = new Fen(fen);
             WhitePlayer = whitePlayer;
             BlackPlayer = blackPlayer;
             IsSelectedForMove = false;
             Board = new Board().CreateBoard(Fen);
+            Update();
         }
 
         private void SwapActiveSide()
@@ -37,7 +38,7 @@ namespace ChessLibrary.Game
                 Fen.ActiveSide = Color.black;
         }
 
-        public List<ISceneItem> GetScene()
+        public override List<ISceneItem> GetScene()
         {
             
             List<ISceneItem> items = new List<ISceneItem>();
@@ -66,7 +67,7 @@ namespace ChessLibrary.Game
                 #endregion
                 for (int i = 0; i < 8; i++)
                 {                    
-                    items.Add(new GameSceneItem(' '+ (i+1).ToString()+" ", false, false, Color.black, Color.white));
+                    items.Add(new GameSceneItem(' '+ (8-i).ToString()+" ", false, false, Color.black, Color.white));
                     items.Add(new GameSceneItem(new string('|', 1), false, false, Color.black, Color.black));
                     for(int j = 0; j < 8; j++)
                     {                                                        
@@ -251,7 +252,8 @@ namespace ChessLibrary.Game
             }
             return Color.white;
         }
-        public void ReadInput()
+
+        public override void ReadInput()
         {
             if (status != 2)
             {
@@ -448,7 +450,7 @@ namespace ChessLibrary.Game
                                         IsSelectedForMove = false;
                                         Fen.HalfMoveCount++;
                                         SwapActiveSide();
-                                        UpdateBoard();
+                                        Update();
                                         #region  Сцена зміни гравця
                                         Console.Clear();
                                         Console.BackgroundColor = ConsoleColor.Black;
@@ -506,7 +508,7 @@ namespace ChessLibrary.Game
 
                                         Fen.HalfMoveCount++;
                                         SwapActiveSide();
-                                        UpdateBoard();
+                                        Update();
 
 
                                         #region  Сцена зміни гравця
@@ -566,7 +568,7 @@ namespace ChessLibrary.Game
                                         Fen.MoveCount++;
 
                                         SwapActiveSide();
-                                        UpdateBoard();
+                                        Update();
                                         #region  Сцена зміни гравця
                                         Console.Clear();
                                         Console.BackgroundColor = ConsoleColor.Black;
@@ -627,7 +629,7 @@ namespace ChessLibrary.Game
                                             Fen.HalfMoveCount++;
                                             Fen.MoveCount++;
                                             SwapActiveSide();
-                                            UpdateBoard();
+                                            Update();
 
 
                                             #region  Сцена зміни гравця
@@ -653,7 +655,8 @@ namespace ChessLibrary.Game
 
                     #region Escape
                     case ConsoleKey.Escape:
-
+                        App.SetGamePart(new EscapeMenuGamePart(this));
+                        App.SetScene(new EscapeMenuScene());
                         break;
                     #endregion
 
@@ -677,11 +680,12 @@ namespace ChessLibrary.Game
 
         }
 
-        public  void Start(string config="NewGameConfig.json")
+        public void Start(string config="NewGameConfig.json")
         {
                       
         }
-        public void UpdateBoard()
+
+        public override void Update()
         {
             foreach (Square sq in Board.Squares)
             {
@@ -788,7 +792,7 @@ namespace ChessLibrary.Game
                 status = 2;
         }
 
-        public static void UpdateBoard( Board Board, Color ActiveSide)
+        public static void Update( Board Board, Color ActiveSide)
         {
             foreach (Square sq in Board.Squares)
             {

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChessLibrary.Scenes
+namespace ChessLibrary.Scenes.Game
 {
-    public class GameScene : ISceneSourse
+    public class ConsoleGameScene : ISceneSourse
     {
         private List<ISceneItem> Scene { get; set ; }
 
-        public GameScene()
+        public ConsoleGameScene()
         {
             
             
