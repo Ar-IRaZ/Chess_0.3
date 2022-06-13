@@ -4,7 +4,7 @@ using ChessLibrary.Scenes.Game;
 using System;
 using System.Collections.Generic;
 
-namespace ChessLibrary.Authorization
+namespace ChessLibrary.MainMenu
 {
     public class MainMenuGamePart : GamePart
     {
@@ -62,8 +62,8 @@ namespace ChessLibrary.Authorization
                             break;
 
                         case 1:
-                            //App.SetGamePart();
-                            //App.SetScene();
+                            App.SetGamePart(new LoadGameGamePart());
+                            App.SetScene(new LoadGameScene());
                             break;
 
                         case 2:

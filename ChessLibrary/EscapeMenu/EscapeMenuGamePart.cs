@@ -10,7 +10,7 @@ namespace ChessLibrary.EscapeMenu
     {
         private int _selectedLine = 0;
         
-        private GamePart currentGamePart { get; set; }
+        public GamePart currentGamePart { get; private set; }
         public EscapeMenuGamePart(GamePart part)
         {
             currentGamePart = part;
@@ -18,13 +18,13 @@ namespace ChessLibrary.EscapeMenu
 
         public override List<ISceneItem> GetScene()
         {
-            List<ISceneItem> sceneItems = new List<ISceneItem>() {  new MenuSceneItems(new string(' ', 80) + '\n', false),
+            List<ISceneItem> sceneItems = new List<ISceneItem>() {  new MenuSceneItems(new string(' ', 79) + '\n', false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
-                                                                                new MenuSceneItems(new string(' ', 33) + "Resume"  + new string(' ', 32)+ '\n', _selectedLine == 0 ? true : false),
+                                                                                new MenuSceneItems(new string(' ', 36) + "Resume"  + new string(' ', 37)+ '\n', _selectedLine == 0 ? true : false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
                                                                                 new MenuSceneItems(new string(' ', 35) + "Save Game"  + new string(' ', 35)+ '\n', _selectedLine == 1 ? true : false),
                                                                                 new MenuSceneItems(new string(' ', 79) + '\n', false),
@@ -68,8 +68,8 @@ namespace ChessLibrary.EscapeMenu
                             break;
 
                         case 1:
-                            //App.SetGamePart();
-                            //App.SetScene();
+                            App.SetGamePart(new SaveGamePart(this));
+                            App.SetScene(new SaveScene());
                             break;
 
                         case 2:

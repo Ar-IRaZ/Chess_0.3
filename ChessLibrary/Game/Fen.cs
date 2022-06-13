@@ -102,7 +102,64 @@ namespace ChessLibrary.Game
                 for(int j = 0; j<8; j++)                
                     Figures[i, j] = board.Squares[i, j].Figure;                
         }
-        
+
+        public override string ToString()
+        {
+            StringBuilder builder = new StringBuilder();
+            int n = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                
+                for (int j = 0; j < 8; j++)
+                {
+                    if (Figures[i, j] != Figure.none)
+                    {
+                        if (n == 0)
+                        {
+                            builder.Append(((char)Figures[i, j]));
+                        }
+                        else
+                        {
+
+                            builder.Append(n.ToString());
+                            builder.Append(((char)Figures[i, j]));
+                            n = 0;
+                        }
+                    }
+                    else
+                    {
+                        n++;
+                    }
+                    
+                }
+                if (n != 0)
+                {
+                    builder.Append(n.ToString());
+                }
+                n = 0;
+                if (i!=7)
+                builder.Append('/');
+            }
+
+            builder.Append(' ');
+            builder.Append(((char)ActiveSide));
+            builder.Append(' ');
+
+            if (Castling[0])
+                builder.Append('K');
+            if (Castling[1])
+                builder.Append('Q');
+            if (Castling[2])
+                builder.Append('k');
+            if (Castling[3])
+                builder.Append('q');
+
+            builder.Append(" - ");
+            builder.Append(MoveCount.ToString());
+            builder.Append(new string(' '+HalfMoveCount.ToString()));
+
+            return builder.ToString();
+        }
     }
 
 

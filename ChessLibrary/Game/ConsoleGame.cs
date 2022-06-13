@@ -11,7 +11,7 @@ namespace ChessLibrary.Game
     {
         private int status;      //0 - Game continue, <0 - Game ended
 
-        private Fen Fen { get; set; }
+        public Fen Fen { get; private set; }
         public Player WhitePlayer { get; set; }
         public Player BlackPlayer { get; set; }
         private Board Board { get; set; }
@@ -685,6 +685,7 @@ namespace ChessLibrary.Game
                       
         }
 
+        
         public override void Update()
         {
             foreach (Square sq in Board.Squares)

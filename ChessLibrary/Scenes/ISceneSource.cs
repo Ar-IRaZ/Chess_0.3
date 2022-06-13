@@ -6,8 +6,7 @@ using System.Text;
 namespace ChessLibrary.Scenes
 {
     public interface ISceneSourse
-    {
-        
+    {        
         public void PrintScene();
         public void UpdateScene(List<ISceneItem> sceneItems);        
 

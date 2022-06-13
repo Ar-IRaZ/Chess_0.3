@@ -4,6 +4,7 @@ using ChessLibrary;
 using ChessLibrary.Authorization;
 using ChessLibrary.Game;
 using ChessLibrary.MainMenu;
+using ChessLibrary.Models;
 using ChessLibrary.Scenes;
 using ChessLibrary.Scenes.Game;
 
@@ -27,13 +28,14 @@ namespace Chess_0._3
 
             Scene scene = new Scene(new MainMenuScene());
             GamePart game = new MainMenuGamePart();
+
             //Scene scene = new Scene(new LogInOrSingInScene());
             //GamePart game = new LogInOrSingInGamePart();
-            App app = new App(game,scene);
+            App app = new App(game, scene);
 
             app.StartApp();
-            
-            
+
+
         }
     }
 }

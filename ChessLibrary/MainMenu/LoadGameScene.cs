@@ -1,13 +1,12 @@
-﻿using ChessLibrary.MainMenu;
-using ChessLibrary.Scenes;
+﻿using ChessLibrary.Scenes;
 using System;
 using System.Collections.Generic;
 
-namespace ChessLibrary.EscapeMenu
+namespace ChessLibrary.MainMenu
 {
-    public class EscapeMenuScene : ISceneSourse
+    internal class LoadGameScene : ISceneSourse
     {
-        private IEnumerable<ISceneItem> _sceneItems;
+        private List<ISceneItem> _sceneItems;
 
         public void PrintScene()
         {
